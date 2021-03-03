@@ -46,7 +46,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(description = "This end point is mainly used to do the Operations on ATMs")
 public class ATMController {
 
-	private static final Logger log = LoggerFactory.getLogger(ATMController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ATMController.class);
 	String URL;
 
 	Map<ATM, String> atmCacheMap = new HashMap<>();
@@ -71,7 +71,7 @@ public class ATMController {
 		for (ATM atm : atmArray) {
 			atmCacheMap.put(atm, atm.getAddress().getCity());
 		}
-		log.info("caching completed");
+		logger.info("caching completed");
 
 	}
 
@@ -83,13 +83,13 @@ public class ATMController {
 
 	public ResponseEntity<?> getAllATMS() {
 		if (atmCacheMap == null || atmCacheMap.isEmpty()) {
-			log.warn("The deafault cache Values are not found or missing");
+			logger.warn("The deafault cache Values are not found or missing");
 			postConstruct();
 		}
 
 		List<ATM> atmData = atmCacheMap.keySet().stream().collect(Collectors.toList());
 		if (atmData == null || atmData.isEmpty()) {
-			log.error("ATM Data not found");
+			logger.error("ATM Data not found");
 			throw new ATMDataNotFoundException("No ATM data Found");
 		}
 		return ResponseEntity.ok(atmCacheMap.keySet().stream().collect(Collectors.toList()));
@@ -117,21 +117,21 @@ public class ATMController {
 		});
 		if (atmsList != null && !atmsList.isEmpty())
 			return ResponseEntity.ok(atmsList);
-		log.debug("No data found for the city" + city);
+		logger.debug("No data found for the city" + city);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("list/CacheEvict")
 	@CacheEvict("/atms")
 	public String listAtmsCacheEvict() {
-		log.debug("Evacuation of list all atms is completed");
+		logger.debug("Evacuation of list all atms is completed");
 		return "Atms Cache list cleared Successfully";
 	}
 
 	@GetMapping("byCity/CacheEvict")
 	@CacheEvict("atmsByCity")
 	public String AtmsByCityCacheEvict() {
-		log.debug("Evacuation of list of atms by city is completed");
+		logger.debug("Evacuation of list of atms by city is completed");
 
 		return "Atms Cache data by city  cleared Successfully";
 	}
@@ -170,10 +170,10 @@ public class ATMController {
 		String type = t.getClass().getSimpleName();
 		String description = t.getMessage() != null ? t.getMessage() : "Unknown error";
 		if (httpStatus.is5xxServerError())
-			log.error(String.format("Encountered unexpected error (code: %s, type: %s, message: %s, uri: %s)",
+			logger.error(String.format("Encountered unexpected error (code: %s, type: %s, message: %s, uri: %s)",
 					httpStatus, type, t.getMessage(), requestUri), t);
 		else if (httpStatus != HttpStatus.NOT_FOUND)
-			log.warn(String.format("Encountered unexpected error (code: %s, type: %s, message: %s, uri: %s)",
+			logger.warn(String.format("Encountered unexpected error (code: %s, type: %s, message: %s, uri: %s)",
 					httpStatus, type, t.getMessage(), requestUri));
 		ErrorDto error = new ErrorDto();
 		error.setStatusCode(httpStatus.value());
