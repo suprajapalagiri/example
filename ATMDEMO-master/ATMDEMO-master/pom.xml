@@ -13,7 +13,7 @@
 	<artifactId>AtmDemo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>AtmDemo</name>
-	<description>Demo project for Spring Boot</description>
+	<description>ATM Demo Project where we need to do all the operations can be performed by the ATM</description>
 	<properties>
 		<java.version>1.8</java.version>
 		<testng.version>6.14.3</testng.version>
