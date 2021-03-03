@@ -1,5 +1,8 @@
 package com.demo.atm.dto;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "This is the Dto which can be used at the Exception handling machanism")
 public class ErrorDto {
 
 	private int statusCode;
